@@ -22,3 +22,6 @@ It must be guarenteed that
 2. producer must be paid for the content per volume of data uploaded
 
 nt. consumer can be producer at the same time
+
+## Resources
+https://liquidity-network.gitbook.io/project/
