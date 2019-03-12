@@ -2,16 +2,28 @@ PORT = 3000;
 PUBLIC_DIR = './public';
 TRACKER_HOST = 'http://localhost:3001'
 PUBLIC_KEY = '0x619B77cF3BAb703EffD17209CeD28866479e56ED';
+PRIVATE_KEY = '0x3fd90538775a5ea09b25fb34fe5223ac53035e41977b1f825138ce49db25b3b3';
+UNIT = 1;
 
 //--------------------------------------------------
 // database
+const { listenIncomingTransfer } = require('./nocust');
+
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('db.json');
 const db = low(adapter);
 
 
-db.defaults({'files': []}).write();
+db.defaults({'files': [], 'received':{}, 'served': {}}).write();
+
+listenIncomingTransfer(PUBLIC_KEY, PRIVATE_KEY, (from, amount)=> {
+	console.log('received ' + amount + ' from ' + from);
+	let received = db.get('received')[from];
+	if (received === undefined) received = 0;
+	db.set('received.'+from, received + amount).write();
+});
+
 
 //--------------------------------------------------
 // scan the "public" directory when startup
@@ -61,8 +73,15 @@ app.use(express.static('public'));
 
 
 function checkIsPaid(req, res, next) {
-  console.log(new Date());
-  //next();
+	const consumer = req.query.consumer;
+	const served = db.get('served')[consumer] || 0;
+	if ((db.get('received')[consumer] || 0) > served) {
+		db.set('served.'+consumer, served + UNIT).write();
+		return next();	
+	}
+ 	else {
+		console.log("Consumer " + consumer + " does not have enough fund");
+	}
 }
 
 app.listen(PORT, () => {
