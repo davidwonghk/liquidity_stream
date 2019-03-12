@@ -1,7 +1,7 @@
 PORT = 3000;
 PUBLIC_DIR = './public';
 TRACKER_HOST = 'http://localhost:3001'
-PUBLIC_KEY = '619B77cF3BAb703EffD17209CeD28866479e56ED';
+PUBLIC_KEY = '0x619B77cF3BAb703EffD17209CeD28866479e56ED';
 
 //--------------------------------------------------
 // database
@@ -10,7 +10,6 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('db.json');
 const db = low(adapter);
 
-const uuid = require('uuid/v1');
 
 db.defaults({'files': []}).write();
 
@@ -57,10 +56,17 @@ function registerToTracker(path) {
 const express = require("express");
 const app = express();
 
+app.use(checkIsPaid);
 app.use(express.static('public'));
 
+
+function checkIsPaid(req, res, next) {
+  console.log(new Date());
+  //next();
+}
 
 app.listen(PORT, () => {
 	console.log("Server running on port "+PORT);
 });
+
 

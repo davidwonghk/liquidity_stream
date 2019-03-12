@@ -7,7 +7,7 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('db.json');
 const db = low(adapter);
 
-const uuid = require('uuid/v1');
+const uuid = require('uuid/v4');
 
 //{fileId: {publicKey, ip, path}}
 db.defaults({"contents":[]})
