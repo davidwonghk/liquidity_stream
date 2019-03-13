@@ -15,13 +15,13 @@ const adapter = new FileSync('db.json');
 const db = low(adapter);
 
 
-db.defaults({'files': [], 'received':{}, 'served': {}}).write();
+db.defaults({'files': [], 'received':[], 'served': []}).write();
 
 listen(PUBLIC_KEY, PRIVATE_KEY, (from, amount)=> {
 	amount = parseInt(amount);
 	console.log('received ' + amount + ' from ' + from);
-	let received = db.get('received')[from];
-	if (received === undefined) received = 0;
+	let received = db.get('received.'+from).value();
+	if (!received) received = 0;
 	db.set('received.'+from, received + amount).write();
 });
 
@@ -75,16 +75,20 @@ app.use(express.static('public'));
 
 function checkIsPaid(req, res, next) {
 	const consumer = req.query.consumer;
-	const received = db.get('received')[consumer] || 0;
-	console.debug({received});
-	const served = db.get('served')[consumer] || 0;
-	console.debug({served});
+
+	let received = db.get('received.'+consumer);
+	received = (received ? received.value() : 0) || 0;
+
+	let served = db.get('served.'+consumer);
+	served = (served ? served.value() : 0) || 0;
+
 	if (received > served) {
 		db.set('served.'+consumer, served + UNIT).write();
 		return next();	
 	}
  	else {
-		console.log("Consumer " + consumer + " does not have enough fund");
+		console.log("Consumer " + consumer + " does not have enough nocust fund");
+		console.debug({served, received});
 	}
 }
 
