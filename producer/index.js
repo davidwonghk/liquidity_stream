@@ -7,7 +7,7 @@ UNIT = 1;
 
 //--------------------------------------------------
 // database
-const { listenIncomingTransfer } = require('./nocust');
+const { listen } = require('../nocust');
 
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync')
@@ -17,7 +17,8 @@ const db = low(adapter);
 
 db.defaults({'files': [], 'received':{}, 'served': {}}).write();
 
-listenIncomingTransfer(PUBLIC_KEY, PRIVATE_KEY, (from, amount)=> {
+listen(PUBLIC_KEY, PRIVATE_KEY, (from, amount)=> {
+	amount = parseInt(amount);
 	console.log('received ' + amount + ' from ' + from);
 	let received = db.get('received')[from];
 	if (received === undefined) received = 0;
@@ -74,8 +75,11 @@ app.use(express.static('public'));
 
 function checkIsPaid(req, res, next) {
 	const consumer = req.query.consumer;
+	const received = db.get('received')[consumer] || 0;
+	console.debug({received});
 	const served = db.get('served')[consumer] || 0;
-	if ((db.get('received')[consumer] || 0) > served) {
+	console.debug({served});
+	if (received > served) {
 		db.set('served.'+consumer, served + UNIT).write();
 		return next();	
 	}
