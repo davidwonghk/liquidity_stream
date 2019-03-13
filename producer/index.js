@@ -70,7 +70,7 @@ const express = require("express");
 const app = express();
 
 app.use(checkIsPaid);
-app.use(express.static('public'));
+app.use(express.static(PUBLIC_DIR));
 
 
 function checkIsPaid(req, res, next) {

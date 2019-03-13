@@ -12,6 +12,12 @@ const nocustManager = new NocustManager({
 	contractAddress: '0x7e9c7846a22d4D6a8Fde0B586Ab1860B00316611',
 });
 
+const BOB_PRIV = '0x6f62ae95be8a602d1358ca272b025b5b8bb625612657842eb23834118ca0021a';
+const ALICE_PRIV = '0x3fd90538775a5ea09b25fb34fe5223ac53035e41977b1f825138ce49db25b3b3';
+
+web3.eth.accounts.wallet.add(BOB_PRIV);
+web3.eth.accounts.wallet.add(ALICE_PRIV);
+
 
 //--------------------------------------------------
 //exports
@@ -32,6 +38,7 @@ exports.listen = async function(publicKey, privateKey, callback) {
 
 //transfer between two nocust accounts
 exports.transfer = async function(from, to, amount) {
+
 	// Register an address with the commit-chain
 	await nocustManager.registerAddress(from);
 	await nocustManager.registerAddress(to);
@@ -57,3 +64,9 @@ exports.deposit = async function(publicKey, privateKey, ether) {
     );
 }
 
+
+exports.getBalance = async function(address) {
+	const nocust = await nocustManager.getNocustBalance(address);
+	const onChain = await nocustManager.getOnChainBalance(address);
+	return { nocust, onChain };
+}

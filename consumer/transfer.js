@@ -5,8 +5,8 @@ const { NocustManager } = require('nocust-client');
 // Setup web3 with Infura const web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/'));
 
 const BOB_PUB = '0x209f4DD8B4eDaE7636AE6190eA2f2971957D8307';
-const BOB_PRIV = '0x6f62ae95be8a602d1358ca272b025b5b8bb625612657842eb23834118ca0021a';
 const ALICE_PUB = '0x619B77cF3BAb703EffD17209CeD28866479e56ED';
+const BOB_PRIV = '0x6f62ae95be8a602d1358ca272b025b5b8bb625612657842eb23834118ca0021a';
 const ALICE_PRIV = '0x3fd90538775a5ea09b25fb34fe5223ac53035e41977b1f825138ce49db25b3b3';
 
 web3.eth.accounts.wallet.add(BOB_PRIV);

@@ -1,0 +1,16 @@
+{
+  "name": "stream",
+  "version": "1.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "npm run prepare-nocust && npm run prepare-tracker && npm run prepare-producer",
+    "prepare-nocust": "cd nocust && npm i  && cd ..",
+    "prepare-tracker": "cd tracker && npm i  && cd ..",
+    "prepare-producer": "cd producer && npm i && cd .."
+  },
+  "author": "David Wong<davidwongtt@gmail.com>",
+  "license": "ISC",
+  "private": true
+}
