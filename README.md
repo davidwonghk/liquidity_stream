@@ -14,8 +14,9 @@ distributing and streaming static content with nearly zero cost from producer/up
 In the case of video streaming, this is the video uploader
 - consumer:
 In the case of video streaming, this is the video watcher
-
-
+- tracker:
+assists in the communication between peers using the the streaming netowrk
+ 
 ## Technical challenges
 It must be guarenteed that 
 1. consumer must pay for the content per volume of data downloaded
