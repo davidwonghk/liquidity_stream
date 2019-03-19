@@ -19,7 +19,9 @@ db.defaults({"contents":[]})
 
 const express = require("express");
 const app = express();
+const cors = require('cors')
 
+app.use(cors());
 
 app.listen(PORT, () => {
 	console.log("Server running on port "+PORT);

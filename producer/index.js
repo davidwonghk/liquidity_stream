@@ -68,7 +68,9 @@ function registerToTracker(path) {
 
 const express = require("express");
 const app = express();
+const cors = require('cors')
 
+app.use(cors());
 app.use(checkIsPaid);
 app.use(express.static(PUBLIC_DIR));
 

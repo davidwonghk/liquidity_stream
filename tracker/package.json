@@ -9,6 +9,7 @@
   "author": "David Wong<davidwongtt@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "lowdb": "^1.0.0",
     "uuid": "^3.3.2"
